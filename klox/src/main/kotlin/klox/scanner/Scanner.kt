@@ -200,7 +200,7 @@ class Scanner(private val source: String) {
 
     // If we never found all the terminating */'s, then we have an error.
     if (level != 0) {
-      error("Unterminated block comment.")
+      error(line, "Unterminated block comment.")
     }
   }
 
