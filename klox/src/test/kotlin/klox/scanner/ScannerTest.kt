@@ -187,8 +187,23 @@ class ScannerTest {
   }
 
   @Test
-  fun ignoreComment() {
-    val tokens = Scanner("// This is a comment...").scanTokens()
+  fun ignoreLineComment() {
+    val tokens = Scanner("// This is a line comment...").scanTokens()
+    val expected = listOf(Token(EOF, "", null, 1))
+    assertEquals(expected, tokens)
+  }
+
+  @Test
+  fun ignoreBlockComment() {
+    val tokens = Scanner("/* This is a block comment... */").scanTokens()
+    val expected = listOf(Token(EOF, "", null, 1))
+    assertEquals(expected, tokens)
+  }
+
+  @Test
+  fun ignoreNestedBlockComment() {
+    val tokens = Scanner("/* /* This is a nested block comment... */ */")
+      .scanTokens()
     val expected = listOf(Token(EOF, "", null, 1))
     assertEquals(expected, tokens)
   }

@@ -95,13 +95,18 @@ class Scanner(private val source: String) {
       // Arithmetic Operators
       '+' -> addToken(PLUS)
       '-' -> addToken(MINUS)
-      '*' -> addToken(STAR)
-      '/' ->
-        if (match('/')) {
-          // Ignore comments.
-          while (peek() != '\n' && !isAtEnd()) advance()
+      '*' -> {
+        if (!match('/')) {
+          addToken(STAR)
         } else {
-          addToken(SLASH)
+          error(line, "Unexpected closing block comment.")
+        }
+      }
+      '/' ->
+        when {
+          match('/') -> lineComment()
+          match('*') -> blockComment()
+          else -> addToken(SLASH)
         }
 
       // Boolean Operators
@@ -171,6 +176,32 @@ class Scanner(private val source: String) {
     val text = source.subSequence(start, current)
     val type = reservedWords[text] ?: IDENTIFIER
     addToken(type)
+  }
+
+  /**
+   * Ignore a line comment.
+   */
+  private fun lineComment() {
+    while (peek() != '\n' && !isAtEnd()) advance()
+  }
+
+  /**
+   * Ignore a block comment with arbitrary nesting.
+   */
+  private fun blockComment() {
+    var level = 1
+    while (level > 0 && !isAtEnd()) {
+      val char = advance()
+      when {
+        char == '/' && match('*') -> level++
+        char == '*' && match('/') -> level--
+      }
+    }
+
+    // If we never found all the terminating */'s, then we have an error.
+    if (level != 0) {
+      error("Unterminated block comment.")
+    }
   }
 
   /**
