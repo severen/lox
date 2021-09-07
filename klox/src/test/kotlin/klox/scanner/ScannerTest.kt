@@ -164,6 +164,29 @@ class ScannerTest {
   }
 
   @Test
+  fun scanHelloWorldProgram() {
+    val program = """
+      fun main() {
+        print "Hello, world!"
+      }
+    """.trimIndent()
+    val actual = Scanner(program).scanTokens()
+    val expected = listOf(
+      Token(FUN, "fun", null, 1),
+      Token(IDENTIFIER, "main", null, 1),
+      Token(LEFT_PAREN, "(", null, 1),
+      Token(RIGHT_PAREN, ")", null, 1),
+      Token(LEFT_BRACE, "{", null, 1),
+      Token(PRINT, "print", null, 2),
+      Token(STRING, "\"Hello, world!\"", "Hello, world!", 2),
+      Token(RIGHT_BRACE, "}", null, 3),
+      // EOF should always be present.
+      Token(EOF, "", null, 3),
+    )
+    matchTokens(expected, actual)
+  }
+
+  @Test
   fun ignoreComment() {
     val tokens = Scanner("// This is a comment...").scanTokens()
     val expected = listOf(Token(EOF, "", null, 1))
