@@ -107,7 +107,7 @@ class Scanner(private val source: String) {
       in '0'..'9' -> number()
 
       else -> {
-        if (isAlpha(char)) {
+        if (char.isAlpha()) {
           identifier()
         } else {
           error(line, "Unexpected character.")
@@ -143,12 +143,12 @@ class Scanner(private val source: String) {
    * Consume a number literal.
    */
   private fun number() {
-    while (peek()?.let { isDigit(it) } == true) advance()
+    while (peek()?.isDigit() == true) advance()
 
-    if (peek() == '.' && peekNext()?.let { isDigit(it) } == true) {
+    if (peek() == '.' && peekNext()?.isDigit() == true) {
       advance()
 
-      while (peek()?.let { isDigit(it) } == true) advance()
+      while (peek()?.isDigit() == true) advance()
     }
 
     addToken(NUMBER, source.subSequence(start, current).toString().toDouble())
@@ -158,7 +158,7 @@ class Scanner(private val source: String) {
    * Consume an identifier, or a keyword if the identifier is reserved.
    */
   private fun identifier() {
-    while (peek()?.let { isAlphaNumeric(it) } == true) advance()
+    while (peek()?.isAlphaNumeric() == true) advance()
 
     val text = source.subSequence(start, current)
     val type = keywords[text] ?: IDENTIFIER
