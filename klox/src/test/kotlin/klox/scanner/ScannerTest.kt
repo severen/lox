@@ -134,6 +134,21 @@ class ScannerTest {
   }
 
   @Test
+  fun scanDecimals() {
+    val actual = Scanner("0.0 1.0 12.0 1729.0 3.14159").scanTokens()
+    val expected = listOf(
+      Token(NUMBER, "0.0", 0.0, 1),
+      Token(NUMBER, "1.0", 1.0, 1),
+      Token(NUMBER, "12.0", 12.0, 1),
+      Token(NUMBER, "1729.0", 1729.0, 1),
+      Token(NUMBER, "3.14159", 3.14159, 1),
+      // EOF should always be present.
+      Token(EOF, "", null, 1),
+    )
+    matchTokens(expected, actual);
+  }
+
+  @Test
   fun scanIdentifier() {
     val actual = Scanner("foo bar baz Vec2 Vec3").scanTokens()
     val expected = listOf(
