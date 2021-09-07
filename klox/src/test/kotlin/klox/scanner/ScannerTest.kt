@@ -130,7 +130,7 @@ class ScannerTest {
       // EOF should always be present.
       Token(EOF, "", null, 1),
     )
-    matchTokens(expected, actual);
+    matchTokens(expected, actual)
   }
 
   @Test
@@ -145,7 +145,7 @@ class ScannerTest {
       // EOF should always be present.
       Token(EOF, "", null, 1),
     )
-    matchTokens(expected, actual);
+    matchTokens(expected, actual)
   }
 
   @Test
@@ -160,7 +160,7 @@ class ScannerTest {
       // EOF should always be present.
       Token(EOF, "", null, 1),
     )
-    matchTokens(expected, actual);
+    matchTokens(expected, actual)
   }
 
   @Test

@@ -3,27 +3,6 @@ package klox.scanner
 import klox.error
 import klox.scanner.TokenType.*
 
-private val keywords: Map<String, TokenType> = mapOf(
-  Pair("and", AND),
-  Pair("or", OR),
-
-  Pair("true", TRUE),
-  Pair("false", FALSE),
-  Pair("nil", NIL),
-
-  Pair("var", VAR),
-  Pair("fun", FUN),
-  Pair("return", RETURN),
-  Pair("class", CLASS),
-  Pair("super", SUPER),
-  Pair("this", THIS),
-  Pair("if", IF),
-  Pair("else", ELSE),
-  Pair("for", FOR),
-  Pair("while", WHILE),
-  Pair("print", PRINT),
-)
-
 /**
  * The lexical analyser for Lox source code that transforms a string of source code into
  * a list of tokens.
@@ -42,14 +21,43 @@ class Scanner(private val source: String) {
    * The character position of the start of the current token.
    */
   private var start = 0
+
   /**
    * The current character position in the original source code.
    */
   private var current = 0
+
   /**
    * The current line position in the original source code.
    */
   private var line = 1
+
+  /**
+   * A map from reserved words to their corresponding token type.
+   */
+  private val reservedWords: Map<String, TokenType> = mapOf(
+    // Boolean Operators
+    Pair("and", AND),
+    Pair("or", OR),
+
+    // Literals
+    Pair("true", TRUE),
+    Pair("false", FALSE),
+    Pair("nil", NIL),
+
+    // Keywords
+    Pair("var", VAR),
+    Pair("fun", FUN),
+    Pair("return", RETURN),
+    Pair("class", CLASS),
+    Pair("super", SUPER),
+    Pair("this", THIS),
+    Pair("if", IF),
+    Pair("else", ELSE),
+    Pair("for", FOR),
+    Pair("while", WHILE),
+    Pair("print", PRINT),
+  )
 
   /**
    * Convert the underlying source code into a list of tokens.
@@ -161,7 +169,7 @@ class Scanner(private val source: String) {
     while (peek()?.isAlphaNumeric() == true) advance()
 
     val text = source.subSequence(start, current)
-    val type = keywords[text] ?: IDENTIFIER
+    val type = reservedWords[text] ?: IDENTIFIER
     addToken(type)
   }
 
