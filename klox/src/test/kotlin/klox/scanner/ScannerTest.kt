@@ -79,6 +79,8 @@ class ScannerTest {
       Pair(LESS_EQUAL, "<="),
       Pair(GREATER, ">"),
       Pair(GREATER_EQUAL, ">="),
+      Pair(AND, "and"),
+      Pair(OR, "or"),
     )
     for ((type, lexeme) in operators) {
       scanToken(type, lexeme)
