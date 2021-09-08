@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="klox" type="JetRunConfigurationType">
+    <option name="MAIN_CLASS_NAME" value="klox.MainKt" />
+    <module name="klox.main" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
