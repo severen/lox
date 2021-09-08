@@ -11,16 +11,14 @@ import kotlin.system.exitProcess
  */
 var hadError = false
 
-fun main(args: Array<String>) {
-  when {
-    args.size > 1 -> {
-      println("Usage: klox [file]")
-      // For exit codes, we use the conventions defined in the Unix "sysexits.h" header.
-      exitProcess(64)
-    }
-    args.size == 1 -> runFile(args[0])
-    else -> runPrompt()
+fun main(args: Array<String>) = when {
+  args.size > 1 -> {
+    println("Usage: klox [file]")
+    // For exit codes, we use the conventions defined in the Unix "sysexits.h" header.
+    exitProcess(64)
   }
+  args.size == 1 -> runFile(args[0])
+  else -> runPrompt()
 }
 
 /**
@@ -39,24 +37,24 @@ fun runFile(path: String) {
  * Run code in a REPL.
  */
 fun runPrompt() {
-  val input = InputStreamReader(System.`in`)
-  val reader = BufferedReader(input)
+  // The prefix for REPL-level commands. This should not conflict with what constitutes
+  // a valid expression in the language.
+  val commandPrefix = ":"
 
+  val reader = BufferedReader(InputStreamReader(System.`in`))
   while (true) {
     print("> ")
     val line = reader.readLine() ?: break
-    if (line.startsWith(':')) {
-      val command = line.removePrefix(":")
-      when (command) {
-        "?" -> println(":q to quit")
-        "q" -> break
-        "quit" -> break
+    when (line.removePrefix(commandPrefix)) {
+      "?" -> println(":q to quit")
+      "q" -> break
+      "quit" -> break
+      else -> {
+        run(line)
+        // Reset the error flag so that the entire session isn't killed if a user makes
+        // a mistake.
+        hadError = false
       }
-    } else {
-      run(line)
-      // Reset the error flag so that the entire session isn't killed if a user makes a
-      // mistake.
-      hadError = false
     }
   }
 }

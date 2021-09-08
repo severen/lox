@@ -52,6 +52,6 @@ enum class TokenType {
   WHILE,
   PRINT,
 
-  // Special token to indicate the end of the file.
+  // Special token to indicate the end of a file.
   EOF,
 }
