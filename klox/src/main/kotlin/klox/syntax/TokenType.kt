@@ -1,4 +1,4 @@
-package klox.scanner
+package klox.syntax
 
 /**
  * The type of a [Token].

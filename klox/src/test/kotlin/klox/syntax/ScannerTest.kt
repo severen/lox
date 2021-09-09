@@ -1,6 +1,6 @@
-package klox.scanner
+package klox.syntax
 
-import klox.scanner.TokenType.*
+import klox.syntax.TokenType.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

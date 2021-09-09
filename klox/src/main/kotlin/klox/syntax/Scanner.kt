@@ -1,7 +1,7 @@
-package klox.scanner
+package klox.syntax
 
 import klox.error
-import klox.scanner.TokenType.*
+import klox.syntax.TokenType.*
 
 /**
  * The lexical analyser for Lox source code that transforms a string of source code into
@@ -223,22 +223,15 @@ class Scanner(private val source: String) {
   /**
    * Get the current character without advancing the scanner.
    */
-  private fun peek(): Char? {
-    if (isAtEnd()) return null
-    return source[current]
-  }
+  private fun peek(): Char? = if (!isAtEnd()) source[current] else null
 
   /**
    * Get the next character without advancing the scanner.
    */
-  private fun peekNext(): Char? {
-    if (current + 1 >= source.length) return null
-    return source[current + 1]
-  }
+  private fun peekNext(): Char? =
+    if (current + 1 < source.length) source[current + 1] else null
 
-  private fun addToken(type: TokenType) {
-    addToken(type, null)
-  }
+  private fun addToken(type: TokenType) = addToken(type, null)
 
   private fun addToken(type: TokenType, literal: Any?) {
     val text = source.subSequence(start, current)

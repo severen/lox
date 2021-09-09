@@ -1,6 +1,6 @@
 package klox
 
-import klox.scanner.Scanner
+import klox.syntax.Scanner
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader

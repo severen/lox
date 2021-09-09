@@ -1,4 +1,4 @@
-package klox.scanner
+package klox.syntax
 
 // TODO: Consider switching to Kotlin's Char.isLetter, Char.isDigit,
 //       and Char.isLetterOrDigit functions.

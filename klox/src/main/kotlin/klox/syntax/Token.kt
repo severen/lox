@@ -1,4 +1,4 @@
-package klox.scanner
+package klox.syntax
 
 /**
  * A token of Lox source code.
