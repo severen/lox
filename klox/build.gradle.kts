@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-  testImplementation(kotlin("test"))
+  testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.21")
 }
 
 application {
