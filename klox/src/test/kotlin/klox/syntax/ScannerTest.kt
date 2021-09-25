@@ -6,6 +6,11 @@ import kotlin.test.assertEquals
 
 class ScannerTest {
   /**
+   * The corresponding list of tokens for an empty program.
+   */
+  private val emptyProgram = listOf(Token(EOF, "", null, 1))
+
+  /**
    * Helper function that tests scanning a single token on one line.
    */
   private fun scanToken(type: TokenType, lexeme: String) {
@@ -191,22 +196,20 @@ class ScannerTest {
   @Test
   fun ignoreLineComment() {
     val tokens = Scanner("// This is a line comment...").scanTokens()
-    val expected = listOf(Token(EOF, "", null, 1))
-    assertEquals(expected, tokens)
+    assertEquals(emptyProgram, tokens)
   }
 
   @Test
   fun ignoreBlockComment() {
     val tokens = Scanner("/* This is a block comment... */").scanTokens()
-    val expected = listOf(Token(EOF, "", null, 1))
-    assertEquals(expected, tokens)
+    assertEquals(emptyProgram, tokens)
   }
 
   @Test
   fun ignoreNestedBlockComment() {
     val tokens = Scanner("/* /* This is a nested block comment... */ */")
       .scanTokens()
-    val expected = listOf(Token(EOF, "", null, 1))
-    assertEquals(expected, tokens)
+    assertEquals(emptyProgram, tokens)
+  }
   }
 }
