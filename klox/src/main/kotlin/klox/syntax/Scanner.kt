@@ -5,13 +5,18 @@ import klox.syntax.TokenType.*
 
 /**
  * The lexical analyser for Lox source code that transforms a string of source code into
- * a list of tokens.
+ * a list of tokens for consumption by a [Parser].
  *
  * See the [Token] class for information on tokens.
  *
  * @param source The source code to lexically analyse.
  */
-class Scanner(private val source: String) {
+class Scanner(source: String) {
+  /**
+   * The source code that is being lexically analysed.
+   */
+  private val source = source.stripShebang()
+
   /**
    * The tokens scanned from the original source code.
    */

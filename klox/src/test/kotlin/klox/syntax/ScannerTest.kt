@@ -27,6 +27,7 @@ class ScannerTest {
    * Helper function for testing that two lists of tokens match.
    */
   private fun matchTokens(expectedTokens: List<Token>, actualTokens: List<Token>) {
+    assertEquals(expectedTokens.size, actualTokens.size)
     for ((expected, actual) in expectedTokens.zip(actualTokens)) {
       matchToken(expected, actual)
     }
@@ -211,5 +212,25 @@ class ScannerTest {
       .scanTokens()
     assertEquals(emptyProgram, tokens)
   }
+
+  @Test
+  fun ignoreShebang() {
+    val prog1 = Scanner("#!/usr/bin/env klox").scanTokens()
+    matchTokens(emptyProgram, prog1)
+
+    val prog2 = Scanner(
+      """
+      #!/usr/bin/env/klox
+      var foo = 3.14159
+      """.trimIndent()
+    ).scanTokens()
+    matchTokens(listOf(
+      Token(VAR, "var", null, 1),
+      Token(IDENTIFIER, "foo", null, 1),
+      Token(EQUAL, "=", null, 1),
+      Token(NUMBER, "3.14159", 3.14159, 1),
+      // EOF should always be present.
+      Token(EOF, "", null, 1),
+    ), prog2)
   }
 }
