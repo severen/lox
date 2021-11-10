@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-  testImplementation(kotlin("test:1.5.21"))
+  testImplementation(kotlin("test:1.5.31"))
 }
 
 application {
@@ -22,6 +22,7 @@ application {
 }
 
 tasks.withType<KotlinCompile> {
+  // TODO: Update to 17 when Kotlin supports Java 17.
   kotlinOptions.jvmTarget = "16"
 }
 
