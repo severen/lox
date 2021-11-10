@@ -5,7 +5,7 @@ package klox.syntax
  */
 sealed class Expr {
   /**
-   * Return a 'pretty' LISP-like representation of the abstract syntax tree formed by
+   * Return a 'pretty' S-expression representation of the abstract syntax tree formed by
    * this expression.
    */
   abstract fun toPrettyString(): String
