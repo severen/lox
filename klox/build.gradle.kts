@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-  kotlin("jvm") version "1.5.31"
+  kotlin("jvm") version "1.7.10"
 
   application
 }
@@ -14,16 +12,11 @@ repositories {
 }
 
 dependencies {
-  testImplementation(kotlin("test:1.5.31"))
+  testImplementation(kotlin("test:1.7.10"))
 }
 
 application {
   mainClass.set("klox.MainKt")
-}
-
-tasks.withType<KotlinCompile> {
-  // TODO: Update to 17 when Kotlin supports Java 17.
-  kotlinOptions.jvmTarget = "16"
 }
 
 tasks.getByName("run", JavaExec::class) {

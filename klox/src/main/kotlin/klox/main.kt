@@ -41,10 +41,9 @@ fun runPrompt() {
   // a valid expression in the language.
   val commandPrefix = ":"
 
-  val reader = BufferedReader(InputStreamReader(System.`in`))
   while (true) {
     print("> ")
-    val line = reader.readLine() ?: break
+    val line = readlnOrNull() ?: break
     when (line.removePrefix(commandPrefix)) {
       "?" -> println(":q to quit")
       "q" -> break

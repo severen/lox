@@ -2,6 +2,7 @@
   <configuration default="false" name="klox" type="JetRunConfigurationType">
     <option name="MAIN_CLASS_NAME" value="klox.MainKt" />
     <module name="klox.main" />
+    <shortenClasspath name="NONE" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
