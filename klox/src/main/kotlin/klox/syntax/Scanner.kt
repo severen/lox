@@ -248,7 +248,6 @@ class Scanner(source: String) {
 
   private fun addToken(type: TokenType, literal: Any?) {
     val text = source.subSequence(start, current)
-    // TODO: Decide whether casting CharSequence to String is a good idea or not.
     tokens.add(Token(type, text as String, literal, line))
   }
 
