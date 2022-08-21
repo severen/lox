@@ -203,6 +203,7 @@ class Scanner(source: String) {
     while (level > 0 && !isAtEnd()) {
       val char = advance()
       when {
+        char == '\n' -> line++
         char == '/' && match('*') -> level++
         char == '*' && match('/') -> level--
       }
