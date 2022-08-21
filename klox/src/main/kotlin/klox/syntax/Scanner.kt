@@ -1,5 +1,8 @@
 package klox.syntax
 
+import com.ibm.icu.lang.UCharacter
+import com.ibm.icu.lang.UProperty
+
 import klox.error
 import klox.syntax.TokenType.*
 
@@ -83,11 +86,6 @@ class Scanner(source: String) {
    */
   private fun scanToken() {
     when (val char = advance()) {
-      // Ignore whitespace.
-      in listOf(' ', '\r', '\t') -> return
-      // Ignore newlines but increment the line counter.
-      '\n' -> line++
-
       // Punctuation
       '(' -> addToken(LEFT_PAREN)
       ')' -> addToken(RIGHT_PAREN)
@@ -124,11 +122,21 @@ class Scanner(source: String) {
       '"' -> string()
       in '0'..'9' -> number()
 
+      // Ignore newlines but increment the line counter.
+      '\n' -> line++
+
       else -> {
-        if (char.isAlpha()) {
-          identifier()
-        } else {
-          error(line, "Unexpected character.")
+        when {
+          char.isXidStart() -> {
+            identifier()
+          }
+          char.isPatternWhiteSpace() -> {
+            // Ignore whitespace.
+            return
+          }
+          else -> {
+            error(line, "Unexpected character.")
+          }
         }
       }
     }
@@ -176,7 +184,7 @@ class Scanner(source: String) {
    * Consume an identifier, or a keyword if the identifier is reserved.
    */
   private fun identifier() {
-    while (peek()?.isAlphaNumeric() == true) advance()
+    while (peek()?.isXidContinue() == true) advance()
 
     val text = source.subSequence(start, current)
     val type = reservedWords[text] ?: IDENTIFIER
@@ -249,3 +257,24 @@ class Scanner(source: String) {
    */
   private fun isAtEnd(): Boolean = current >= source.length
 }
+
+/**
+ * Check whether this character has the XID_START character property as defined by
+ * Unicode Standard Annex #31.
+ */
+private fun Char.isXidStart(): Boolean =
+  UCharacter.hasBinaryProperty(this.code, UProperty.XID_START)
+
+/**
+ * Check whether this character has the XID_CONTINUE character property as defined by
+ * Unicode Standard Annex #31.
+ */
+private fun Char.isXidContinue(): Boolean =
+  UCharacter.hasBinaryProperty(this.code, UProperty.XID_CONTINUE)
+
+/**
+ * Check whether this character has the PATTERN_WHITE_SPACE character property as
+ * defined by Unicode Standard Annex #31.
+ */
+private fun Char.isPatternWhiteSpace(): Boolean =
+  UCharacter.hasBinaryProperty(this.code, UProperty.PATTERN_WHITE_SPACE)
