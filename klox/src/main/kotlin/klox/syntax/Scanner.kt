@@ -1,8 +1,5 @@
 package klox.syntax
 
-import com.ibm.icu.lang.UCharacter
-import com.ibm.icu.lang.UProperty
-
 import klox.error
 import klox.syntax.TokenType.*
 
@@ -256,24 +253,3 @@ class Scanner(source: String) {
    */
   private fun isAtEnd(): Boolean = current >= source.length
 }
-
-/**
- * Check whether this character has the XID_START character property as defined by
- * Unicode Standard Annex #31.
- */
-private fun Char.isXidStart(): Boolean =
-  UCharacter.hasBinaryProperty(this.code, UProperty.XID_START)
-
-/**
- * Check whether this character has the XID_CONTINUE character property as defined by
- * Unicode Standard Annex #31.
- */
-private fun Char.isXidContinue(): Boolean =
-  UCharacter.hasBinaryProperty(this.code, UProperty.XID_CONTINUE)
-
-/**
- * Check whether this character has the PATTERN_WHITE_SPACE character property as
- * defined by Unicode Standard Annex #31.
- */
-private fun Char.isPatternWhiteSpace(): Boolean =
-  UCharacter.hasBinaryProperty(this.code, UProperty.PATTERN_WHITE_SPACE)

@@ -1,20 +1,36 @@
 package klox.syntax
 
-// TODO: Consider switching to Kotlin's Char.isLetter, Char.isDigit,
-//       and Char.isLetterOrDigit functions.
+import com.ibm.icu.lang.UCharacter
+import com.ibm.icu.lang.UProperty
 
 /**
- * Check whether the given character is alphanumeric.
+ * Check whether this character has the XID_START character property as defined by
+ * Unicode Standard Annex #31.
  */
-fun Char.isAlphaNumeric(): Boolean = this.isAlpha() || this.isDigit()
+fun Char.isXidStart() =
+  UCharacter.hasBinaryProperty(this.code, UProperty.XID_START)
 
 /**
- * Check whether the given character is alphabetic.
+ * Check whether this character has the XID_CONTINUE character property as defined by
+ * Unicode Standard Annex #31.
  */
-fun Char.isAlpha(): Boolean = this in 'a'..'z' || this in 'A'..'Z' || this == '_'
+fun Char.isXidContinue() =
+  UCharacter.hasBinaryProperty(this.code, UProperty.XID_CONTINUE)
 
 /**
- * Check whether the given character is a digit.
+ * Check whether this character has the PATTERN_WHITE_SPACE character property as
+ * defined by Unicode Standard Annex #31.
+ */
+fun Char.isPatternWhiteSpace() =
+  UCharacter.hasBinaryProperty(this.code, UProperty.PATTERN_WHITE_SPACE)
+
+/**
+ * Check whether this character is a decimal digit.
+ *
+ * This method is more restrictive than isDigit in the standard library, which considers
+ * a 'digit' to be any Unicode character in the DECIMAL_DIGIT_NUMBER category. For
+ * example, the standard library considers the Devanagari digit २ to be a digit,
+ * while this method does not.
  */
 fun Char.isDigit(): Boolean = this in '0'..'9'
 
