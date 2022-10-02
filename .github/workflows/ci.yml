@@ -10,6 +10,24 @@ permissions:
   contents: read
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./klox
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: 18
+        distribution: temurin
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
+    - name: Run tests
+      run: ./gradlew test
+
   build:
     strategy:
       matrix:
