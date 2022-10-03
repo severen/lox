@@ -32,7 +32,7 @@ fun Char.isPatternWhiteSpace() =
  * example, the standard library considers the Devanagari digit २ to be a digit,
  * while this method does not.
  */
-fun Char.isDigit(): Boolean = this in '0'..'9'
+fun Char.isDigit() = this in '0'..'9'
 
 /**
  * Strip the Unix shebang line from the beginning of this string.

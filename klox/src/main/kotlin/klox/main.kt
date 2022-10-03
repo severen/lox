@@ -1,9 +1,7 @@
 package klox
 
 import klox.syntax.Scanner
-import java.io.BufferedReader
 import java.io.File
-import java.io.InputStreamReader
 import kotlin.system.exitProcess
 
 /**

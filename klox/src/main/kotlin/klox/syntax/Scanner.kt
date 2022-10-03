@@ -102,12 +102,12 @@ class Scanner(source: String) {
           error(line, "Unexpected closing block comment.")
         }
       }
-      '/' ->
-        when {
-          match('/') -> lineComment()
-          match('*') -> blockComment()
-          else -> addToken(SLASH)
-        }
+      '/' -> when {
+        match('/') -> lineComment()
+        match('*') -> blockComment()
+
+        else -> addToken(SLASH)
+      }
 
       // Boolean Operators
       '=' -> addToken(if (match('=')) EQUAL_EQUAL else EQUAL)
@@ -122,19 +122,12 @@ class Scanner(source: String) {
       // Ignore newlines but increment the line counter.
       '\n' -> line++
 
-      else -> {
-        when {
-          char.isXidStart() -> {
-            identifier()
-          }
-          char.isPatternWhiteSpace() -> {
-            // Ignore whitespace.
-            return
-          }
-          else -> {
-            error(line, "Unexpected character.")
-          }
-        }
+      else -> when {
+        char.isXidStart() -> identifier()
+        // Ignore whitespace.
+        char.isPatternWhiteSpace() -> return
+
+        else -> error(line, "Unexpected character.")
       }
     }
   }
@@ -144,9 +137,9 @@ class Scanner(source: String) {
    */
   private fun string() {
     // Advance forwards to the closing ".
-    while (peek() != '"' && !isAtEnd()) {
-      if (peek() == '\n') line++
+    while (!isAtEnd() && peek() != '"') {
       advance()
+      if (!isAtEnd() && peek() == '\n') line++
     }
 
     // If we never found the closing ", then we have an error.
@@ -166,12 +159,12 @@ class Scanner(source: String) {
    * Consume a number literal.
    */
   private fun number() {
-    while (peek()?.isDigit() == true) advance()
+    while (!isAtEnd() && peek().isDigit()) advance()
 
-    if (peek() == '.' && peekNext()?.isDigit() == true) {
+    if (!isAtEnd() && peek() == '.' && peekNext()?.isDigit() == true) {
       advance()
 
-      while (peek()?.isDigit() == true) advance()
+      while (!isAtEnd() && peek().isDigit()) advance()
     }
 
     addToken(NUMBER, source.subSequence(start, current).toString().toDouble())
@@ -181,7 +174,7 @@ class Scanner(source: String) {
    * Consume an identifier, or a keyword if the identifier is reserved.
    */
   private fun identifier() {
-    while (peek()?.isXidContinue() == true) advance()
+    while (!isAtEnd() && peek().isXidContinue()) advance()
 
     val text = source.subSequence(start, current)
     val type = reservedWords[text] ?: IDENTIFIER
@@ -192,7 +185,7 @@ class Scanner(source: String) {
    * Ignore a line comment.
    */
   private fun lineComment() {
-    while (peek() != '\n' && !isAtEnd()) advance()
+    while (!isAtEnd() && peek() != '\n') advance()
   }
 
   /**
@@ -200,7 +193,7 @@ class Scanner(source: String) {
    */
   private fun blockComment() {
     var level = 1
-    while (level > 0 && !isAtEnd()) {
+    while (!isAtEnd() && level > 0) {
       val char = advance()
       when {
         char == '\n' -> line++
@@ -215,6 +208,8 @@ class Scanner(source: String) {
     }
   }
 
+  // NOTE: Since we check if we have reached the end of the input in the scanTokens()
+  // function, we do not check for it here to avoid redundancy.
   /**
    * Get the current character and advance the scanner.
    */
@@ -234,7 +229,7 @@ class Scanner(source: String) {
   /**
    * Get the current character without advancing the scanner.
    */
-  private fun peek(): Char? = if (!isAtEnd()) source[current] else null
+  private fun peek(): Char = source[current]
 
   /**
    * Get the next character without advancing the scanner.
