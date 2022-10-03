@@ -1,6 +1,6 @@
 # klox
 
-This is a Kotlin implementation of a tree-walking interpreter for the Lox programming
+klox is a Kotlin implementation of a tree-walking interpreter for the Lox programming
 language from the excellent book [Crafting Interpreters](https://craftinginterpreters.com/)
 by Bob Nystrom.
 
