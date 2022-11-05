@@ -1,5 +1,7 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-  kotlin("jvm") version "1.7.10"
+  kotlin("jvm") version "1.7.20"
 
   application
 }
@@ -12,8 +14,10 @@ repositories {
 }
 
 dependencies {
-  implementation("com.ibm.icu:icu4j:71.1")
-  testImplementation(kotlin("test:1.7.10"))
+  implementation(kotlin("stdlib-jdk8"))
+
+  implementation("com.ibm.icu:icu4j:72.1")
+  testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.20")
 }
 
 application {
@@ -32,4 +36,14 @@ tasks.jar {
   manifest {
     attributes["Main-Class"] = "klox.MainKt"
   }
+}
+
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+  jvmTarget = "18"
+}
+
+val compileTestKotlin: KotlinCompile by tasks
+compileTestKotlin.kotlinOptions {
+  jvmTarget = "18"
 }
